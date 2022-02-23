@@ -15,3 +15,8 @@
 3. [Good To know](https://www.youtube.com/watch?v=aUF2QCEudPo)
 * ``` document.setCookie("value; samesite=none")```  No practical use
 * ``` document.setCookie("value; ")``` 
+
+## Passport
+
+1. [Aditional dependencies ```npm i passport  passport-google-oauth20 express-session http-proxy-middleware```]() 
+2. [min 34:00 to 1:12:00](https://www.youtube.com/watch?v=SBvmnHTQIPY)

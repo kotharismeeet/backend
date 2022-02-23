@@ -11,10 +11,37 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/customer',require('./routes/customerRoutes.js'));
+const passport = require('passport');
+//serialize and deserialize particularly!
+require('./config/passport.js')(passport);
+
+const session = require('express-session');
+const {createProxyMiddleware} = require('http-proxy-middleware');
+
+app.use(
+    session({
+        secret: process.env.cookieKey,
+        resave: false,
+        saveUninitialized: false
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+const passportRoute = require('./routes/authPassportRoutes.js');
+app.use('/api/auth',passportRoute);
+
+app.use('/api/proxy', createProxyMiddleware({
+    target: 'http://localhost:3000',
+    changeOrigin: true,
+    pathRewrite: {
+        [`#`]: '',
+    },
+ }));
+//app.use('/api/customer',require('./routes/customerRoutes.js'));
 
 app.get('/api/helloworld',(req,res) => {
-    return res.send('Hello World!').sendStatus(200);
+    return res.sendStatus(200);
 });
 
 
