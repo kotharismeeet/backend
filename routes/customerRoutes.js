@@ -17,7 +17,7 @@ router.get('',asyncHandler(async (req,res) => {
                 status: 200
             })
         }
-        else*/ res.sendStatus(404);
+        else*/ res.sendStatus(200);
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
