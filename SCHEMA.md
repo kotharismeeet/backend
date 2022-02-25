@@ -48,7 +48,6 @@ vendor_booking_fee : {}
 3. Vendor_Menu (ref vendor_category_id)
 4. Vendor_Menu_Topping (ref vendor_menu_id)
    
-### Not for Now
 
 ## Events
 
