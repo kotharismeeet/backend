@@ -160,7 +160,7 @@ const setCustomerMore = asyncHandler( async (req,res) => {
             customer
         });
         if(customerMore) return res.send({
-            _id
+            customer
         });
     } catch (error) {
         console.log(error);

@@ -32,8 +32,9 @@ const customerSchema = new mongoose.Schema({
 });
 
 // https://stackoverflow.com/questions/14348516/cascade-style-delete-in-mongoose
-customerSchema.pre('remove', (next) => {
+customerSchema.post('deleteOne', (next) => {
     CustomerMore.remove({customer : this._id}).exec();
+    next();
 });
 
 const Customer = mongoose.model('Customer',customerSchema); 
