@@ -51,4 +51,4 @@ const customerMoreSchema = new mongoose.Schema({
 
 const CustomerMore = mongoose.model('CustomerMore', customerMoreSchema);
 
-module.exports = {Customer, CustomerMore};
+module.exports = Customer;
