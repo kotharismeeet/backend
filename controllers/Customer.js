@@ -82,7 +82,10 @@ const registerCustomer = asyncHandler (async (req,res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Step 3 : If dosen't exist enter in database
-        const customer = await Customer.create({
+        const customer = await Customer.aggregate([
+            {$project: {name: 1, contactnum: 1, email:0, password:0, isAdmin:0}}
+        ])
+        .create({
             name,
             email,
             password: hashedPassword,
