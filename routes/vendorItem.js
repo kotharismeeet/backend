@@ -8,6 +8,6 @@ router.put('/:itemId',updateItem);
 router.delete('/:itemId',deleteItem);
 router.get('/all',getAllItems);
 router.get('/:itemId',getItemById);
-router.get('/v/:vendorId',getItemsByVendor);
+router.get('/vendor/:vendorId',getItemsByVendor);
 router.get('/category/:categoryId',getItemsByCategory);   
 module.exports = router;

@@ -21,25 +21,14 @@ const getAllItems = asynchandler( async(req,res) => {
         const numberOfRows = parseInt(req.query.numberOfRows);
         const pageNo = parseInt(req.query.pageNo);
 
-        /*const items = await VendorItem.find(
-            { $type : { price : Number}},
-            { inStock: bool},
-            { $lte : { price : ltePrice }},
-            { $gte : { price : gtePrice }}
-
-        ).sort(
-            {[key] : order}
-        ).skip(numberOfRows*(pageNo-1)
-        ).limit(numberOfRows);*/
-        console.log({[key]: order} );
+        console.log({ [key] : order} );
         
-        items = await VendorItem.aggregate([
-            { $project : {"item": 1, "price": 1, "inStock": 1}},
-            //{ $match : {"item" : searchText} },
-            { $sort : { [key] : order} },
-            { $skip : numberOfRows*(pageNo-1)},
-            { $limit : numberOfRows}
-        ]);
+        const items = await VendorItem.find({
+            inStock: bool,
+            $lte: {price:ltePrice},
+            $gte : {price:gtePrice},
+            //$where: {$elemMatch: {item:  searchText}}
+        }).sort({[key]:order}).skip((pageNo-1)*numberOfRows).limit(numberOfRows);   
         
 
         return res.send({
@@ -98,16 +87,25 @@ const getItemsByVendor = asynchandler( async(req,res) => {
         //console.log('Im hitted!');
         const vendorId = req.params.vendorId;
 
-        // https://docs.mongodb.com/manual/core/aggregation-pipeline/
-        // https://mongoosejs.com/docs/api/aggregate.html#aggregate_Aggregate-lookup
-        const items = await VendorItem.aggregate([
-            {$lookup : { from: Vendor, localField: 'vendor', foreignField: "_id", as: "vendors"}},
-            {$group: {categories: '$category'}}
+        let items = await VendorItem.aggregate([
+            
+                {$group:{
+                    "_id":"$category",
+                    "count":{"$sum":1},
+                    "items":{"$push":"$item"},
+                }},
+                {$lookup: {
+                    from: 'vendorcategories',
+                    localField: 'category',
+                    foreignField: '_id',
+                    as: 'categoryDetails'
+                }}
+            
         ]);
-        console.log(items);
+        //console.log(items);
         
         return res.send({
-            response,
+            items,
             status: 200
         });  
     } catch (error) {

@@ -18,9 +18,20 @@ const vendorSchema = mongoose.Schema({
     country : {type: String, required: true}, 
     postal_code : {type: String, required: true}, 
     contact_no : {type: Number, required : true}, 
+    // https://docs.mongodb.com/manual/geospatial-queries/
+    // co-ordinate library for frontend : https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+    location: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'],
+        },
+        coordinates: [0, 0]
+    }
     }, {
         timestamps : true
     });
+
+    vendorSchema.index({ location : "2dsphere" });
 
 const Vendor  = mongoose.model('Vendor',vendorSchema); 
 
