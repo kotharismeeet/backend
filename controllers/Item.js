@@ -89,17 +89,19 @@ const getItemsByVendor = asynchandler( async(req,res) => {
 
         let items = await VendorItem.aggregate([
             
-                {$group:{
-                    "_id":"$category",
-                    "count":{"$sum":1},
-                    "items":{"$push":"$item"},
-                }},
-                {$lookup: {
-                    from: 'vendorcategories',
-                    localField: 'category',
-                    foreignField: '_id',
-                    as: 'categoryDetails'
-                }}
+            {$lookup: {
+                from: 'vendorcategories',
+                localField: 'category',
+                foreignField: '_id',
+                as: 'categoryDetails'
+            }},
+            {$group:{
+                "_id":"$category",
+                "count":{"$sum":1},
+                "items":{"$push":"$item"},
+                "categoryName":{"$push":"$categoryDetails"}
+            }}
+                
             
         ]);
         //console.log(items);

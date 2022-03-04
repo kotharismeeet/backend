@@ -14,6 +14,7 @@ app.use(express.json());
 app.use('/api/customer',require('./routes/customerRoutes.js'));
 app.use('/api/vendor',require('./routes/vendorRoutes.js'));
 app.use('/api/item',require('./routes/itemRoutes.js'));
+app.use('/api/event',require('./routes/eventRoutes.js'));
 
 app.get('/api/helloworld',(req,res) => {
     return res.send('Hello World!').sendStatus(200);
