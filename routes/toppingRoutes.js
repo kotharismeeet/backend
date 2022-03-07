@@ -5,4 +5,4 @@ router.get('/all',getToppings);
 router.route('/:id').delete(deleteToppings).put(updateToppings);
 router.post('',createToppings);
 
-module.exports = route;
+module.exports = router;
