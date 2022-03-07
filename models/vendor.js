@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 
+const pointSchema = new mongoose.Schema({
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+});
+
 const vendorSchema = mongoose.Schema({ 
     restauarant_official_name : {type : String, required: true}, 
     display_name : {type: String, required: true}, 
@@ -21,17 +33,14 @@ const vendorSchema = mongoose.Schema({
     // https://docs.mongodb.com/manual/geospatial-queries/
     // co-ordinate library for frontend : https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
     location: {
-        type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'],
-        },
-        coordinates: [0, 0]
+        type: pointSchema,
+        required: true
     }
     }, {
         timestamps : true
-    });
+});
 
-    vendorSchema.index({ location : "2dsphere" });
+vendorSchema.index({ location : "2dsphere" });
 
 const Vendor  = mongoose.model('Vendor',vendorSchema); 
 
@@ -62,12 +71,29 @@ let vendorItemSchema = mongoose.Schema({
     item: {type: String, required: true}, 
     price: {type: Number, required: true}, 
     inStock: {type: Boolean, required: true}, 
-    //order:{} 
+    variants: [{
+        variantName: {type: String},
+        variantPrice: {type: Number}
+    }],
+    toppings: [{
+        name:{
+            type: String
+        },
+        price:{
+            type: Number
+        },
+        inStock:{
+            type: Boolean,
+            default: true
+        }
+    }]
+
 }); 
  // https://docs.mongodb.com/manual/indexes/ 
 // https://stackoverflow.com/questions/51349764/createindex-in-mongoose 
 vendorItemSchema.index({category: 1}); 
 
 const VendorItem = mongoose.model('VendorItem',vendorItemSchema);
+
 
 module.exports = {VendorItem,VendorCategory,Vendor};

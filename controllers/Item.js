@@ -1,4 +1,4 @@
-const {VendorItem,VendorCategory,Vendor} = require('../models/Vendor.js');
+const {VendorItem} = require('../models/Vendor.js');
 const asynchandler = require('express-async-handler');
 
 // /api/vendor
@@ -9,7 +9,7 @@ const getAllItems = asynchandler( async(req,res) => {
         const bool = onlyAvailable === 'true'?true:false;
         
         // logical operators
-        const searchText = req.query.searchText || '';
+        const searchText = req.query.searchText.toString();
         const ltePrice = req.query.maxPrice;
         const gtePrice = req.query.minPrice || 0;
         
@@ -21,13 +21,13 @@ const getAllItems = asynchandler( async(req,res) => {
         const numberOfRows = parseInt(req.query.numberOfRows);
         const pageNo = parseInt(req.query.pageNo);
 
-        console.log({ [key] : order} );
+        console.log(searchText);
         
         const items = await VendorItem.find({
             inStock: bool,
             $lte: {price:ltePrice},
             $gte : {price:gtePrice},
-            //$where: {$elemMatch: {item:  searchText}}
+            $match: {"$item": {$regex: searchText}}
         }).sort({[key]:order}).skip((pageNo-1)*numberOfRows).limit(numberOfRows);   
         
 
@@ -87,22 +87,22 @@ const getItemsByVendor = asynchandler( async(req,res) => {
         //console.log('Im hitted!');
         const vendorId = req.params.vendorId;
 
-        let items = await VendorItem.aggregate([
-            
-                {$group:{
-                    "_id":"$category",
-                    "count":{"$sum":1},
-                    "items":{"$push":"$item"},
-                }},
-                {$lookup: {
-                    from: 'vendorcategories',
-                    localField: 'category',
-                    foreignField: '_id',
-                    as: 'categoryDetails'
-                }}
-            
+        let items = await VendorItem.aggregate([            
+            {$match: {vendor: vendorId}},
+            {$lookup: {
+                from: "vendorcategories",
+                localField: "category",
+                foreignField: "_id",
+                as: 'categoryDetails'
+            }},
+            {$group:{
+                "_id":"$category",
+                "count":{"$sum":1},
+                "items":{"$push":"$item"},
+                "parentName":{"$push":"$categoryDetails"}
+            }},                                         
         ]);
-        //console.log(items);
+        // parentName[0][0].categoryName
         
         return res.send({
             items,
