@@ -1,15 +1,15 @@
 const {VendorItem} = require('../models/vendor.js');
 
-const getToppings   = async(req,res) => {
+const getVariants   = async(req,res) => {
     try {                
         const itemId = req.params.id;
-        const toppings = await VendorItem.Vendor(
+        const variants = await VendorItem.Vendor(
             {_id: itemId},
-            {toppings: 1}
+            {variants: 1}
         );
 
-        if(toppings) return res.josn({
-            toppings,
+        if(variants) return res.josn({
+            variants,
             status: 200
         });
         else return res.sendStatus(500);
@@ -19,16 +19,16 @@ const getToppings   = async(req,res) => {
     }
 }
  
-const createToppings = async(req,res) => {
+const createVariants = async(req,res) => {
     try {
         const itemId = req.params.id;
         const jsonObject = req.body;
         // https://docs.mongodb.com/manual/reference/operator/update/push/
-        const tops = await VendorItem.updateOne(
+        const newVariant = await VendorItem.updateOne(
             { _id: itemId},
-            {$push: {toppings: jsonObject}}
+            {$push: {variants: jsonObject}}
         );
-        if(tops) return res.json(tops);
+        if(newVariant) return res.json(newVariant);
         else return res.json({
             status: 500
         });
@@ -38,17 +38,17 @@ const createToppings = async(req,res) => {
     }
 }
 
-const deleteToppings = async(req,res) => {
+const deleteVariants = async(req,res) => {
     try {
         const itemId = req.params.id;
-        const toppingName = req.query.name;
+        const variantName = req.query.name;
         // https://docs.mongodb.com/manual/reference/operator/update/pull/
-        const deletedtopping = await VendorItem.updateOne(
+        const deleteVariant= await VendorItem.updateOne(
             {_id: itemId},
-            {$pull: {"toppings.name": toppingName}}
+            {$pull: {"variants.name": variantName}}
         );
 
-        if(deletedtopping) return res.sendStatus(200);
+        if(deleteVariant) return res.sendStatus(200);
         else return res.sendStatus(500);    
     } catch (error) {
         console.log(error);
@@ -56,20 +56,20 @@ const deleteToppings = async(req,res) => {
     }
 }
 
-const updateToppings = async(req, res) => {
+const updateVariants = async(req, res) => {
     try {
         const itemId = req.params.id;
-        const toppingName = req.query.name;
+        const variantName = req.query.name;
         const newPrice = req.query.price;
 
         //https://docs.mongodb.com/manual/reference/operator/update/positional/
-        const updatedtopping = await VendorItem.updateOne(
-            {_id: itemId, "toppings.name" : toppingName},
-            {$set: {"toppings.$.name": toppingName}},
-            {$set: { "toppings.$.price": newPrice }}
+        const updatedVariant = await VendorItem.updateOne(
+            {_id: itemId, "variants.name" : variantName},
+            {$set: {"variants.$.name": variantName}},
+            {$set: { "variants.$.price": newPrice }}
         );
-        if(updateToppings) return res.json({
-            updatedtopping,
+        if(updatedVariant) return res.json({
+            updatedVariant,
             status: 200
         });
          else return res.sendStatus(500);      
@@ -79,9 +79,4 @@ const updateToppings = async(req, res) => {
     }
 }
 
-module.exports = {
-    getToppings,
-    createToppings,
-    deleteToppings,
-    updateToppings
-}
+module.exports = {getVariants, createVariants, deleteVariants, updateVariants};

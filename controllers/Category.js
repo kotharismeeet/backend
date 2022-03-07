@@ -1,6 +1,5 @@
-const asyncHandler=require('express-async-handler')
-const Category=require('../model/categoryModel');
-const { search } = require('../routes/categoryRoutes');
+const asyncHandler=require('express-async-handler');
+const {VendorCategory} = require('../models/vendor.js');
 
 //Get Category
 const getCategories=asyncHandler(async(req,res)=>{
@@ -11,72 +10,94 @@ const getCategories=asyncHandler(async(req,res)=>{
         const limit=req.query.limit;
         const order=req.query.order;    //1:Ascending   -1:Descending
         const offset=req.query.offset;
-        const category=await Category.find({},{categoryName:1,categoryDescription:1})
-                                     //.populate({path:'vendorDetails'})
-                                     .sort([[sortField,order]])
-                                     .limit(limit)
-                                     .skip(offset)
-                                     
-        const matchCategory=await Category.aggregate( [
-            { $match: { $or: [ { categoryName: searchCategory }, { startingRange: { $gt: 150} } ] } }
-            
-          ] );
-        
-       
-        // -------------------------------Aggregate Queries---------------------------
+        const category=await VendorCategory.find({},{categoryName:1,categoryDescription:1}).sort([[sortField,order]]).skip((offset-1)*limit).limit(limit);
 
-        //List all the distinct categories
-        const distinctMainCategories=await Category.distinct("categoryName")
-        console.log(`Category:Total Distinct Items are `+distinctMainCategories)
-
-
-
-
-        res.status(200).json(category)
+        if(category) return res.json({
+            category,
+            status: 200
+        })
     }catch(err){
         console.log(err)
     }
-})
+});
+
+const categoryById = asyncHandler(async(req,res)=>{
+    try {
+        const categoryId = req.params.id;
+
+        const category = await VendorCategory.findById(categoryId);
+        if(category) return res.json({
+            category,
+            status: 200
+        });
+        else return res.sendStatus(500);
+    } catch (error) {
+        console.log(error);
+        res.json({
+            error,
+            status: 500
+        });
+    }
+
+});
+
 //Create Category 
 const setCategories=asyncHandler(async(req,res)=>{
-        const category = await Category.create({
-        categoryName:req.body.categoryName,
-        categoryDescription:req.body.categoryDescription,
-        vendorDetails:req.body.vendorDetails
-    }).populate({path:'vendorDetails'})
-    //category.populate('vendorDetails')
-    
-    res.status(200).json(category)
-})
+    try {
+        const newCategory = await VendorCategory.create(req.body);
+        if(newCategory) return res.json({
+            newCategory,
+            stauts: 200
+        });
+        else return res.sendStatus(500);
+    } catch (error) {
+        console.log(error);
+        res.json({
+            error,
+            status: 500
+        });
+    }
+});
 
 //Update Category By Id
 const updateCategories=asyncHandler(async(req,res)=>{
-
-    const category=await Category.findById(req.params.id)
-
-    if(!category){
-        res.send(400)
-        throw new Error('Category not found')
+    try {
+        const categoryId = req.params.id;
+        const updatedCategory = await VendorCategory.updateOne({_id:categoryId},req.body);
+        if(updatedCategory) return res.json({
+            updatedCategory,
+            stauts: 200
+        });   
+        else return res.sendStatus(500);
+    } catch (error) {
+        console.log(error);
+        res.json({
+            error,
+            status: 500
+        });
     }
-    const updatedCategory=await Category.findByIdAndUpdate(req.params.id,req.body,{
-        new:true
-    })
-    res.status(200).json(updatedCategory)
-})
+});
 
 //Delete Category by Id
 const deleteCategories=asyncHandler(async(req,res)=>{
+    try {
+        const categoryId = req.params.id;
 
-    const category=await Category.findById(req.params.id)
-
-    if(!category){
-        res.send(400)
-        throw new Error('Category not found')
+        const category = await VendorCategory.deleteById(categoryId);
+        if(category) return res.json({
+            category,
+            status: 200
+        });
+        else return res.sendStatus(500);
+    } catch (error) {
+        console.log(error);
+        res.json({
+            error,
+            status: 500
+        });
     }
-    await category.remove()
-    res.status(200).json({id:req.params.id})
-})
+});
 
 module.exports={
-  getCategories,setCategories,updateCategories,deleteCategories
-}
+  getCategories,setCategories,updateCategories,deleteCategories,categoryById
+};

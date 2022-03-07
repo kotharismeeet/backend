@@ -14,6 +14,9 @@ app.use(express.json());
 app.use('/api/customer',require('./routes/customerRoutes.js'));
 app.use('/api/vendor',require('./routes/vendorRoutes.js'));
 app.use('/api/item',require('./routes/itemRoutes.js'));
+app.use('/api/category',require('./routes/categoryRoutes.js'));
+app.use('/api/variant',require('./routes/variantsRoutes.js'));
+app.use('/api/toppings',require('./routes/toppingRoutes.js'));
 
 app.get('/api/helloworld',(req,res) => {
     return res.send('Hello World!').sendStatus(200);
