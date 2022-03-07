@@ -77,15 +77,6 @@ const deleteCategories=asyncHandler(async(req,res)=>{
     res.status(200).json({id:req.params.id})
 })
 
-// Count Categories
-const countCategories= asyncHandler(async(req,res)=>{
-    try{
-        const totalCategories=await Category.find().count()
-        res.status(200).json(totalCategories)
-    }catch(err){
-        console.log(err)
-    }
-})
 module.exports={
-  getCategories,setCategories,updateCategories,deleteCategories,countCategories
+  getCategories,setCategories,updateCategories,deleteCategories
 }
