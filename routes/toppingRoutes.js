@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const {getToppings,createToppings,deleteToppings,updateToppings} = require('../controllers/Toppings');
 
-router.get('/all',getToppings);
-router.route('/:id').delete(deleteToppings).put(updateToppings);
-router.post('',createToppings);
+router.route('/:id/:toppingId').get(getToppings).delete(deleteToppings).put(updateToppings).post(createToppings);
 
 module.exports = router;

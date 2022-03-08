@@ -83,7 +83,7 @@ const deleteCategories=asyncHandler(async(req,res)=>{
     try {
         const categoryId = req.params.id;
 
-        const category = await VendorCategory.deleteById(categoryId);
+        const category = await VendorCategory.deleteOne({_id:categoryId});
         if(category) return res.json({
             category,
             status: 200

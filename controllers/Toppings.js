@@ -3,12 +3,12 @@ const {VendorItem} = require('../models/vendor.js');
 const getToppings   = async(req,res) => {
     try {                
         const itemId = req.params.id;
-        const toppings = await VendorItem.Vendor(
-            {_id: itemId},
+        const toppings = await VendorItem.findById(
+            itemId,
             {toppings: 1}
         );
 
-        if(toppings) return res.josn({
+        if(toppings) return res.json({
             toppings,
             status: 200
         });
@@ -41,11 +41,12 @@ const createToppings = async(req,res) => {
 const deleteToppings = async(req,res) => {
     try {
         const itemId = req.params.id;
-        const toppingName = req.query.name;
+        const toppingId = req.params.id;
+        //const toppingName = req.query.name;
         // https://docs.mongodb.com/manual/reference/operator/update/pull/
         const deletedtopping = await VendorItem.updateOne(
-            {_id: itemId},
-            {$pull: {"toppings.name": toppingName}}
+            {_id:itemId},
+            {"$pull": {"toppings": toppingId}}
         );
 
         if(deletedtopping) return res.sendStatus(200);
@@ -59,14 +60,15 @@ const deleteToppings = async(req,res) => {
 const updateToppings = async(req, res) => {
     try {
         const itemId = req.params.id;
+        const toppingId = req.params.id;
         const toppingName = req.query.name;
-        const newPrice = req.query.price;
+        const newPrice = parseInt(req.query.price);
 
         //https://docs.mongodb.com/manual/reference/operator/update/positional/
         const updatedtopping = await VendorItem.updateOne(
             {_id: itemId, "toppings.name" : toppingName},
-            {$set: {"toppings.$.name": toppingName}},
-            {$set: { "toppings.$.price": newPrice }}
+            {"$set": {"toppings.$.name": toppingName}},
+            {"$set": { "toppings.$.price": newPrice }}           
         );
         if(updateToppings) return res.json({
             updatedtopping,

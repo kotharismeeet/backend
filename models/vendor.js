@@ -17,7 +17,11 @@ const vendorSchema = mongoose.Schema({
     address : {type: String, required: true}, 
     country : {type: String, required: true}, 
     postal_code : {type: String, required: true}, 
-    contact_no : {type: Number, required : true}, 
+    contact_no : {type: Number, required : true},    
+    serviceTypes:{
+        type: String,
+        enum: ['On Site Delivery','Collection','Home Delivery']
+    }, 
     // https://docs.mongodb.com/manual/geospatial-queries/
     // co-ordinate library for frontend : https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
     location: {
@@ -37,7 +41,7 @@ const Vendor  = mongoose.model('Vendor',vendorSchema);
 
 const vendorCategorySchema = mongoose.Schema({ 
     categoryName:{type: String , required: true}, 
-    categoryDesciption:{type: String , required: true}, 
+    categoryDescription:{type: String , required: true}, 
     vendor: { 
         type: mongoose.Schema.Types.ObjectId, 
         required: true, 

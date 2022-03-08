@@ -1,14 +1,14 @@
 const {VendorItem} = require('../models/vendor.js');
 
 const getVariants   = async(req,res) => {
-    try {                
+    try { 
         const itemId = req.params.id;
-        const variants = await VendorItem.Vendor(
-            {_id: itemId},
+        const variants = await VendorItem.findById(
+            itemId,
             {variants: 1}
         );
 
-        if(variants) return res.josn({
+        if(variants) return res.json({
             variants,
             status: 200
         });
@@ -25,7 +25,7 @@ const createVariants = async(req,res) => {
         const jsonObject = req.body;
         // https://docs.mongodb.com/manual/reference/operator/update/push/
         const newVariant = await VendorItem.updateOne(
-            { _id: itemId},
+            {_id:itemId},
             {$push: {variants: jsonObject}}
         );
         if(newVariant) return res.json(newVariant);
@@ -41,13 +41,14 @@ const createVariants = async(req,res) => {
 const deleteVariants = async(req,res) => {
     try {
         const itemId = req.params.id;
-        const variantName = req.query.name;
+        const variantId = req.params.variantId;
+        //const variantName = req.query.name;
         // https://docs.mongodb.com/manual/reference/operator/update/pull/
         const deleteVariant= await VendorItem.updateOne(
             {_id: itemId},
-            {$pull: {"variants.name": variantName}}
+            {"$pull": {"variants": variantId}}
         );
-
+        console.log(deleteVariant);
         if(deleteVariant) return res.sendStatus(200);
         else return res.sendStatus(500);    
     } catch (error) {
@@ -60,13 +61,13 @@ const updateVariants = async(req, res) => {
     try {
         const itemId = req.params.id;
         const variantName = req.query.name;
-        const newPrice = req.query.price;
-
+        const newPrice = parseInt(req.query.price);
+        console.log(newPrice);
         //https://docs.mongodb.com/manual/reference/operator/update/positional/
         const updatedVariant = await VendorItem.updateOne(
-            {_id: itemId, "variants.name" : variantName},
-            {$set: {"variants.$.name": variantName}},
-            {$set: { "variants.$.price": newPrice }}
+            {_id: itemId, "variants.variantName" : variantName},
+            {"$set": {"variants.$.variantName": variantName}},
+            {"$set": { "variants.$.variantPrice": newPrice }}
         );
         if(updatedVariant) return res.json({
             updatedVariant,
