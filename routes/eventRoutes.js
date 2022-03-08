@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const {getAll,getEvent,deleteEvent,updateEvent,addEvent,
-    getAllLocation,getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent,
-    addVendorIn,updateVendorIn,deleteVendorIn} = require('../controllers/Event.js');
+    getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent,
+    addVendorIn,deleteVendorIn} = require('../controllers/Event.js');
 
 // event Routes - 5
 /**
@@ -15,7 +15,7 @@ router.post('',addEvent);
 /**
  *  api/event/location
  */
-router.get('/location/all',getAllLocation);
+//router.get('/location/all',getAllLocation);
 router.route('/location/:id').get(getLocation).delete(deleteLocation).put(updateLocation);
 router.post('/location',addLocation);
 
@@ -29,5 +29,5 @@ router.get('/zones/:id',getLocationsByEvent);
  * api/event/zone/vendor/id
  */
 
-router.route('/zone/vendor/:zoneId').post(addVendorIn).put(updateVendorIn).delete(deleteVendorIn);
+router.route('/zone/vendor/:zoneId').post(addVendorIn).delete(deleteVendorIn);
 module.exports = router;

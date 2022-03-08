@@ -1,22 +1,6 @@
 const {EventLocation} = require('../models/Event');
 
 /**
- * ROUTE : /api/vendor/zone/all
- * SECURITY : PUBLIC
- */
- const getAllLocation = async(req,res) => {
-    try {
-        
-    } catch (error) {
-        console.log(error);
-        res.json({
-            error,
-            status: 200
-        });
-    }
-};
-
-/**
  * ROUTE : /api/vendor/zone/id
  * SECURITY : PUBLIC
  */
@@ -96,4 +80,4 @@ const {EventLocation} = require('../models/Event');
     }
 };
 
-module.exports = {getAllLocation,getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent};
+module.exports = {getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent};

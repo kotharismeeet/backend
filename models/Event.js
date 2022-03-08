@@ -30,8 +30,10 @@ const eventSchema = mongoose.Schema({
 const Event = mongoose.model('Event',eventSchema);    
 
 const eventLocationSchema = mongoose.Schema({ 
-    name: {type: String}, 
-    //zoneLocation
+    zoneIdentifier: {type: String, required: true}, 
+    zoneName: [{
+        subZoneName: {type: String}
+    }],
     event: { 
         type:mongoose.Schema.Types.ObjectId, 
         required: true, 
