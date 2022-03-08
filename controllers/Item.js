@@ -1,4 +1,4 @@
-const {VendorItem,VendorCategory,Vendor} = require('../models/Vendor.js');
+const {VendorItem} = require('../models/Vendor.js');
 const asynchandler = require('express-async-handler');
 
 // /api/vendor

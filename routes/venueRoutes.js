@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {getAll,getVenue,deleteVenue,updateVenue,createVenue,addVendorIn,updateVenodrIn,deleteVenodorIn}
+const {getAll,getVenue,deleteVenue,updateVenue,createVenue,addVendorIn,updateVendorIn,deleteVendorIn}
 = require('../controllers/Venue');
 
 /**
@@ -14,7 +14,7 @@ router.post('',createVenue);
  * api/venue/vendor/id
  */
  router.route('vendor/:eventId').post(addVendorIn)
-        .put(updateVenodrIn)
-        .delete(deleteVenodorIn);
+        .put(updateVendorIn)
+        .delete(deleteVendorIn);
 
 module.exports = router;

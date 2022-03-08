@@ -21,7 +21,7 @@ const {Venue,VenueVendor} = require('../models/Venue.js')
  * ROUTE : cant be decided
  * SECURITY : PUBLIC
  */
- const updateVenodrIn = async(req,res) => {
+ const updateVendorIn = async(req,res) => {
     try {
         // event or venue
         const variable = req.query.variable;
@@ -38,7 +38,7 @@ const {Venue,VenueVendor} = require('../models/Venue.js')
  * ROUTE : cant be decided
  * SECURITY : PUBLIC
  */
- const deleteVenodorIn = async(req,res) => {
+ const deleteVendorIn = async(req,res) => {
     try {
         // event or venue
         const variable = req.query.variable;
@@ -51,4 +51,4 @@ const {Venue,VenueVendor} = require('../models/Venue.js')
     }
 };
 
-module.exports = {addVendorIn,updateVenodrIn,deleteVenodorIn};
+module.exports = {addVendorIn,updateVendorIn,deleteVendorIn};
