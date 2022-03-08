@@ -13,7 +13,7 @@ const getAll = async(req,res) => {
         const pass = req.query.pass
         // const order = req.query.order
         const events = await Event.aggregate([
-            {$match: {name :{$regex: pass}}},
+            {$match: {name :{$regex: pass, $options: "i"}}},
             {$skip: pages*records},
             {$limit: records},
 
