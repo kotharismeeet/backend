@@ -1,10 +1,10 @@
-const {Event,EventZone,EventZoneVendor} = require('../models/Event');
+const {EventLocation} = require('../models/Event');
 
 /**
  * ROUTE : /api/vendor/zone/all
  * SECURITY : PUBLIC
  */
- const getAllZone = async(req,res) => {
+ const getAllLocation = async(req,res) => {
     try {
         
     } catch (error) {
@@ -20,7 +20,7 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
  * ROUTE : /api/vendor/zone/id
  * SECURITY : PUBLIC
  */
- const getZone = async(req,res) => {
+ const getLocation = async(req,res) => {
     try {
         
     } catch (error) {
@@ -36,7 +36,7 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
  * ROUTE : /api/vendor/zone/id
  * SECURITY : PRIVATE
  */
- const deleteZone = async(req,res) => {
+ const deleteLocation = async(req,res) => {
     try {
         
     } catch (error) {
@@ -52,7 +52,7 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
  * ROUTE : /api/vendor/zone/id
  * SECURITY : PRIVATE
  */
- const updateZone = async(req,res) => {
+ const updateLocation = async(req,res) => {
     try {
         
     } catch (error) {
@@ -68,7 +68,7 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
  * ROUTE : /api/vendor/zone/id
  * SECURITY : PRIVATE
  */
- const addZone = async(req,res) => {
+ const addLocation = async(req,res) => {
     try {
         
     } catch (error) {
@@ -84,7 +84,7 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
  * ROUTE : /api/vendor/zone/id
  * SECURITY : PRIVATE
  */
- const getZoneByEvent = async(req,res) => {
+ const getLocationsByEvent = async(req,res) => {
     try {
         
     } catch (error) {
@@ -96,4 +96,4 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
     }
 };
 
-module.exports = {getAllZone,getZone,deleteZone,updateZone,addZone,getZoneByEvent};
+module.exports = {getAllLocation,getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent};

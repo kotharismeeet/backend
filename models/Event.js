@@ -29,7 +29,7 @@ const eventSchema = mongoose.Schema({
 
 const Event = mongoose.model('Event',eventSchema);    
 
-const eventZoneSchema = mongoose.Schema({ 
+const eventLocationSchema = mongoose.Schema({ 
     name: {type: String}, 
     //zoneLocation
     event: { 
@@ -40,9 +40,9 @@ const eventZoneSchema = mongoose.Schema({
     }
 }); 
 
-const EventZone = mongoose.model('EventZone', eventZoneSchema); 
+const EventLocation = mongoose.model('EventLocation', eventLocationSchema); 
     
-const eventZoneVendorSchema = mongoose.Schema({ 
+const eventVendorSchema = mongoose.Schema({ 
     vendors: [
         { 
             type:mongoose.Schema.Types.ObjectId, 
@@ -50,14 +50,14 @@ const eventZoneVendorSchema = mongoose.Schema({
             ref: Vendor,
         }
     ], 
-    eventZone: { 
+    event: { 
         type:mongoose.Schema.Types.ObjectId, 
         required: true, 
-        ref: 'EventZone', 
+        ref: 'Event', 
         index: true 
     } 
 }); 
 
-const EventZoneVendor = mongoose.model('EventZoneVendor', eventZoneVendorSchema);
+const EventVendor = mongoose.model('EventVendor', eventVendorSchema);
 
-module.exports = {Event,EventZone,EventZoneVendor};
+module.exports = {Event,EventLocation,EventVendor};
