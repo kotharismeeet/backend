@@ -4,9 +4,9 @@ const Vendor = require('./Vendor.js');
 const eventSchema = mongoose.Schema({ 
     name: {type: String, required: true}, 
     //location: {type: String, required: true}, 
-    postcode: {type: String, required: true}, 
-    startdate: {type: Date, required: true}, 
-    enddate: {type: Date, required: true}, 
+    postCode: {type: String, required: true}, 
+    startDate: {type: Date, required: true}, 
+    endDate: {type: Date, required: true}, 
     address: { 
         type: String, 
         required: true, 
@@ -30,7 +30,7 @@ const eventSchema = mongoose.Schema({
 const Event = mongoose.model('Event',eventSchema);    
 
 const eventZoneSchema = mongoose.Schema({ 
-    name: {type: string}, 
+    name: {type: String}, 
     //zoneLocation
     event: { 
         type:mongoose.Schema.Types.ObjectId, 
@@ -50,7 +50,7 @@ const eventZoneVendorSchema = mongoose.Schema({
             ref: Vendor,
         }
     ], 
-    eventzone: { 
+    eventZone: { 
         type:mongoose.Schema.Types.ObjectId, 
         required: true, 
         ref: 'EventZone', 

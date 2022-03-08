@@ -6,7 +6,19 @@ const {Event,EventZone,EventZoneVendor} = require('../models/Event');
  */
 const getAll = async(req,res) => {
     try {
-        
+        let pages = req.query.page
+        pages = pages-1
+        const records = parseInt(req.query.recordsPerPage)
+        // const key = req.query.key
+        const pass = req.query.pass
+        // const order = req.query.order
+        const events = await Event.aggregate([
+            {$match: {name :{$regex: pass}}},
+            {$skip: pages*records},
+            {$limit: records},
+
+        ])
+        res.json([events,{"total records":events.length}])
     } catch (error) {
         console.log(error);
         res.json({
@@ -22,7 +34,8 @@ const getAll = async(req,res) => {
  */
  const getEvent = async(req,res) => {
     try {
-        
+        const events = await Event.find(req.params.id) 
+        res.json(events)
     } catch (error) {
         console.log(error);
         res.json({
@@ -36,9 +49,10 @@ const getAll = async(req,res) => {
  * ROUTE : /api/vendor/id
  * SECURITY : PRIVATE
  */
- const deleteEvent = async(req,res) => {
+ const addEvent = async(req,res) => {
     try {
-        
+        const events = await Event.create(req.body)
+        res.json(events)
     } catch (error) {
         console.log(error);
         res.json({
@@ -54,7 +68,9 @@ const getAll = async(req,res) => {
  */
  const updateEvent = async(req,res) => {
     try {
-        
+        const events = await Event.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
+        // const event = await req.body
+        res.json(events)
     } catch (error) {
         console.log(error);
         res.json({
@@ -68,9 +84,10 @@ const getAll = async(req,res) => {
  * ROUTE : /api/vendor/all
  * SECURITY : PUBLIC
  */
- const addEvent = async(req,res) => {
+ const deleteEvent = async(req,res) => {
     try {
-        
+        await Event.findByIdAndDelete(req.params.id)
+        res.sendStatus(200)
     } catch (error) {
         console.log(error);
         res.json({
