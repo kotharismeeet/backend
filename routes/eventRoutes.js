@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const {getAll,getEvent,deleteEvent,updateEvent,addEvent,
-    getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent,
-    addVendorIn,deleteVendorIn,getVendorsByEvent} = require('../controllers/Event.js');
+const {getAll,getEvent,deleteEvent,updateEvent,addEvent,} = require('../controllers/Event.js');
+const {addVendorIn,deleteVendorIn,getVendorsByEvent} = require('../controllers/Operation.js');
+const {getLocation,deleteLocation,addLocation,getLocationsByEvent,} = require('../controllers/Location.js')
 // event Routes - 5
 /**
  * api/event
@@ -15,13 +15,13 @@ router.post('',addEvent);
  *  api/event/location
  */
 //router.get('/location/all',getAllLocation);
-router.route('/location/:id').get(getLocation).delete(deleteLocation).put(updateLocation);
-router.post('/location',addLocation);
+router.route('/location/:id').get(getLocationsByEvent).delete(deleteLocation);
+router.route('/location/:id').post(addLocation);
 
 /*
  imp get zone of events
 */
-router.get('/zones/:id',getLocationsByEvent);
+// router.get('/zones/:id',getLocationsByEvent);
 
 // Event Zone Vendor Routes - 3
 /**

@@ -1,20 +1,5 @@
 const {EventLocation} = require('../models/Event');
 
-/**
- * ROUTE : /api/vendor/zone/id
- * SECURITY : PUBLIC
- */
- const getLocation = async(req,res) => {
-    try {
-        
-    } catch (error) {
-        console.log(error);
-        res.json({
-            error,
-            status: 200
-        });
-    }
-};
 
 /**
  * ROUTE : /api/vendor/zone/id
@@ -22,7 +7,14 @@ const {EventLocation} = require('../models/Event');
  */
  const deleteLocation = async(req,res) => {
     try {
-        
+        await EventLocation.updateOne({
+            event: req.params.id,
+            zoneIdentifier:req.body.zoneIdentifier,
+        },
+        {
+            $pull:{zoneName:req.body.zoneName}
+        })
+        res.sendStatus(200)
     } catch (error) {
         console.log(error);
         res.json({
@@ -32,21 +24,6 @@ const {EventLocation} = require('../models/Event');
     }
 };
 
-/**
- * ROUTE : /api/vendor/zone/id
- * SECURITY : PRIVATE
- */
- const updateLocation = async(req,res) => {
-    try {
-        
-    } catch (error) {
-        console.log(error);
-        res.json({
-            error,
-            status: 200
-        });
-    }
-};
 
 /**
  * ROUTE : /api/vendor/zone/id
@@ -54,7 +31,15 @@ const {EventLocation} = require('../models/Event');
  */
  const addLocation = async(req,res) => {
     try {
-        
+        const location = await EventLocation.updateOne(
+            {
+                event: req.params.id,
+                zoneIdentifier:req.body.zoneIdentifier
+            },
+            {
+                $push:{zoneName:req.body.zoneName}
+            })
+        res.send(location)
     } catch (error) {
         console.log(error);
         res.json({
@@ -70,7 +55,8 @@ const {EventLocation} = require('../models/Event');
  */
  const getLocationsByEvent = async(req,res) => {
     try {
-        
+        const locations = await EventLocation.findById(req.params.id)
+        res.send(locations)
     } catch (error) {
         console.log(error);
         res.json({
@@ -80,4 +66,4 @@ const {EventLocation} = require('../models/Event');
     }
 };
 
-module.exports = {getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent};
+module.exports = {deleteLocation,addLocation,getLocationsByEvent};
