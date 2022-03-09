@@ -97,11 +97,11 @@ const getAll = async(req,res) => {
     }
 };
 
-const {getAllLocation,getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent}
+const {getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent}
 = require('./Location.js');
 
-const {addVendorIn,deleteVendorIn} = require('./Operation.js');
+const {addVendorIn,deleteVendorIn,getVendorsByEvent} = require('./Operation.js');
 
 module.exports = {getAll,getEvent,deleteEvent,updateEvent,addEvent,
-    getAllLocation,getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent,
-    addVendorIn,deleteVendorIn};
+    getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent,
+    addVendorIn,deleteVendorIn,getVendorsByEvent};

@@ -2,7 +2,6 @@ const router = require('express').Router();
 const {getAll,getEvent,deleteEvent,updateEvent,addEvent,
     getLocation,deleteLocation,updateLocation,addLocation,getLocationsByEvent,
     addVendorIn,deleteVendorIn,getVendorsByEvent} = require('../controllers/Event.js');
-
 // event Routes - 5
 /**
  * api/event
