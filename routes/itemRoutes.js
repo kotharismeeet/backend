@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {addItem, updateItem, deleteItem, getAllItems,getItemById,getItemsByCategory,getItemsByVendor} = require('../controllers/item.js');
 
+
 /*router.get('/:categoryId',getItemsByCategory);
 router.get('/:vendorId',getItemsByVendor);*/
 router.post('',addItem);

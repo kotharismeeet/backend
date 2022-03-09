@@ -61,8 +61,24 @@ let vendorItemSchema = mongoose.Schema({
     },
     item: {type: String, required: true}, 
     price: {type: Number, required: true}, 
-    inStock: {type: Boolean, required: true}, 
-    //order:{} 
+    inStock: {type: Boolean, required: true},
+    variants: [{
+        variantName: {type: String},
+        variantPrice: {type: Number}
+    }],
+    toppings: [{
+        name:{
+            type: String
+        },
+        price:{
+            type: Number
+        },
+        inStock:{
+            type: Boolean,
+            default: true
+        }
+    }]
+    
 }); 
  // https://docs.mongodb.com/manual/indexes/ 
 // https://stackoverflow.com/questions/51349764/createindex-in-mongoose 
